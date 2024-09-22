@@ -33,7 +33,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TaskApp(){
+    //variable for each task
     var tasks by remember { mutableStateOf("") }
+    //create list and couple it with string and boolean , true = completed. false = not completed
     var taskListing = remember { mutableStateListOf<Pair<String, Boolean>>() }
 
     Column{
@@ -44,10 +46,12 @@ fun TaskApp(){
             label = {Text("Enter your task")}
         )
 
+        //if text field is not empty, add it to the list (task Listing)
         Button(
             onClick = {
                 if(tasks.isNotEmpty()){
                     taskListing.add(Pair(tasks,false))
+                    //clear the Text on textfield for next task
                     tasks=""
                 }
             }
@@ -58,6 +62,7 @@ fun TaskApp(){
 
         Button(
             onClick = {
+                //safely copy all the not completed tasks to temporary list and remove the original and copy not completed tasks back to original
                 val temp = mutableListOf<Pair<String, Boolean>>()
                 for (task in taskListing){
                     if(task.second == false){
@@ -78,6 +83,7 @@ fun taskList(taskListing: MutableList<Pair<String, Boolean>>) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
+                //if check box is checked, update the boolean so system will know that specific task is completed.
                 Checkbox(
                     checked = task.second,
                     onCheckedChange = { isChecked ->
