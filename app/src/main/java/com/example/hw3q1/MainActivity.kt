@@ -15,7 +15,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.hw3q1.ui.theme.HW3Q1Theme
 
 
@@ -38,13 +45,28 @@ fun TaskApp(){
     //create list and couple it with string and boolean , true = completed. false = not completed
     var taskListing = remember { mutableStateListOf<Pair<String, Boolean>>() }
 
-    Column{
+
+    Column (
+        // Aligns the contents
+        modifier = Modifier.padding(
+            top = 180.dp,
+            start = 100.dp,
+            end = 100.dp
+        )
+    ) {
         TextField(
             value = tasks,
             onValueChange = {tasks = it},
-            modifier = Modifier.fillMaxWidth(),
-            label = {Text("Enter your task")}
+            modifier = Modifier
+                .fillMaxWidth(),
+            label = {Text("Enter your task")},
+            textStyle = TextStyle(
+                fontSize = 12.sp
+            )
+
         )
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         //if text field is not empty, add it to the list (task Listing)
         Button(
@@ -54,11 +76,13 @@ fun TaskApp(){
                     //clear the Text on textfield for next task
                     tasks=""
                 }
-            }
+            },
+            // Align the buttons
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+
         ) {
             Text("Add Task")
         }
-        taskList(taskListing = taskListing)
 
         Button(
             onClick = {
@@ -71,8 +95,14 @@ fun TaskApp(){
                 }
                 taskListing.clear()
                 taskListing.addAll(temp)
-            }
+            },
+            // Align the buttons
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         ){Text("Clear Completed Task")}
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        taskList(taskListing = taskListing)
     }
 }
 
@@ -93,7 +123,23 @@ fun taskList(taskListing: MutableList<Pair<String, Boolean>>) {
                 )
 
 
-                Text(text = task.first)
+                Text(
+                    text = task.first,
+                    // Strikes through text when the box is checked
+                    // and makes the text red for visibility
+                    style = if (task.second) {
+                        TextStyle(
+                            textDecoration = TextDecoration.LineThrough,
+                            color = Color.Red
+                        )
+
+                    } else {
+                        TextStyle.Default
+                    },
+                    // Improve readability and align the text with the checkbox
+                    fontSize = 24.sp,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
             }
         }
     }
