@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun TaskApp(){
     //variable for each task
